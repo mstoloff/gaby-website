@@ -1,12 +1,14 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "gaby-website",
+  "name": "gaby-website-5-5-26",
+  "main": "./worker/index.ts",
   "compatibility_date": "2025-01-01",
   "build": {
     "command": "npm install && npm run build"
   },
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "404-page"
   }
 }
