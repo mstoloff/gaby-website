@@ -1,0 +1,53 @@
+---
+interface Props {
+  title: string;
+  lead?: string;
+}
+
+const { title, lead } = Astro.props;
+---
+
+<main class="page">
+  <header class="page-head">
+    <h1>{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+  </header>
+  <div class="page-body">
+    <slot />
+  </div>
+</main>
+
+<style>
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 2rem;
+  }
+  .page-head {
+    margin-bottom: 2.5rem;
+  }
+  .page-head h1 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    margin: 0;
+  }
+  .lead {
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    margin: 0.5rem 0 0;
+  }
+  .page-body :global(h2) {
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .page-body :global(h3) {
+    font-size: 1.15rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .page-body :global(p) {
+    margin: 0 0 1rem;
+  }
+</style>

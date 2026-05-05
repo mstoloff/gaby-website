@@ -1,0 +1,74 @@
+---
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/about/', label: 'About' },
+  { href: '/media/', label: 'Media' },
+  { href: '/repertoire/', label: 'Repertoire' },
+  { href: '/voice-lessons/', label: 'Voice Lessons' },
+  { href: '/contact/', label: 'Contact' },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => {
+  const normalized = href.replace(/\/$/, '') || '/';
+  return normalized === path;
+};
+---
+
+<header class="site-header">
+  <a href="/" class="brand">Gabriela Stoloff-Báez</a>
+  <nav aria-label="Primary">
+    <ul>
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    border-bottom: 1px solid #ece6d9;
+  }
+  .brand {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    color: var(--color-fg);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+  nav a {
+    color: var(--color-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--color-fg);
+  }
+  nav a[aria-current='page'] {
+    border-bottom: 1px solid var(--color-accent);
+  }
+</style>

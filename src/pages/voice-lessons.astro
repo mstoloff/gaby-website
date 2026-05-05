@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Page from '../components/Page.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'Voice Lessons',
+  provider: { '@id': 'https://www.gabrielastoloffbaez.com/#person' },
+  areaServed: 'Worldwide (online); in-person in [CITY]',
+  audience: {
+    '@type': 'Audience',
+    audienceType: 'Singers — pre-college through professional',
+  },
+  description:
+    'Classical and crossover voice lessons with Gabriela Stoloff-Báez (Oberlin, SFCM). Audition coaching available in English, Spanish, Italian, German, and French.',
+};
+---
+
+<Layout
+  title="Voice Lessons — Gabriela Stoloff-Báez"
+  description="Classical and crossover voice lessons with Gabriela Stoloff-Báez. Audition coaching, college and conservatory prep, online worldwide and in person."
+  jsonLd={jsonLd}
+>
+  <Page
+    title="Voice Lessons"
+    lead="Healthy classical and crossover technique — for the next audition or the next decade."
+  >
+    <p>
+      I teach singers building healthy classical and crossover technique —
+      undergraduates preparing audition rep, adults returning to the studio, and
+      high-school students working toward conservatory. Lessons are offered in
+      person in [CITY] and online worldwide. Repertoire coaching available in
+      English, Spanish, Italian, German, and French.
+    </p>
+
+    <h2>Who I Teach</h2>
+    <ul>
+      <li>Pre-college and conservatory audition prep</li>
+      <li>Undergraduate and graduate-level singers</li>
+      <li>Professional singers maintaining technique between contracts</li>
+      <li>Adult learners returning to the studio</li>
+    </ul>
+
+    <h2>Formats</h2>
+    <ul>
+      <li>60-minute in-person lessons</li>
+      <li>45- or 60-minute online lessons (Zoom)</li>
+      <li>Targeted audition coaching</li>
+    </ul>
+
+    <h2>Pricing</h2>
+    <p>
+      Trial lesson: <strong>$[X]</strong> · Single lesson: <strong>$[X]</strong> ·
+      Four-lesson package: <strong>$[X]</strong>
+    </p>
+    <p><em>Replace bracketed amounts with your current rates.</em></p>
+
+    <p style="margin-top: 2.5rem;">
+      <a href="/contact/?subject=Voice%20lesson%20inquiry" class="cta">
+        Book a trial lesson →
+      </a>
+    </p>
+  </Page>
+</Layout>
+
+<style>
+  .cta {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 2px;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+  }
+  .cta:hover {
+    opacity: 0.9;
+  }
+</style>

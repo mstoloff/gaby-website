@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Page from '../components/Page.astro';
+
+interface MediaItem {
+  title: string;
+  composer?: string;
+  type: 'video' | 'audio';
+  embedSrc?: string;
+  description?: string;
+}
+
+const items: MediaItem[] = [
+  // Replace these placeholders with real YouTube/Vimeo/SoundCloud embed URLs.
+  // YouTube example: 'https://www.youtube.com/embed/VIDEO_ID'
+  // Vimeo example:   'https://player.vimeo.com/video/VIDEO_ID'
+  // {
+  //   title: 'Pace, pace mio Dio',
+  //   composer: 'Verdi · La forza del destino',
+  //   type: 'video',
+  //   embedSrc: 'https://www.youtube.com/embed/REPLACE_ME',
+  //   description: 'Live performance, San Francisco Conservatory, May 2024.',
+  // },
+];
+---
+
+<Layout
+  title="Media — Gabriela Stoloff-Báez"
+  description="Video and audio recordings of soprano Gabriela Stoloff-Báez performing operatic arias, oratorio, and art song."
+>
+  <Page title="Media" lead="Selected video and audio.">
+    {
+      items.length === 0 ? (
+        <p>
+          Recordings coming soon. For audition tapes, please <a href="/contact/">request the press kit</a>.
+        </p>
+      ) : (
+        <div class="media-grid">
+          {items.map((m) => (
+            <article class="media-item">
+              <div class="embed">
+                {m.type === 'video' && m.embedSrc && (
+                  <iframe
+                    src={m.embedSrc}
+                    title={m.title}
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  />
+                )}
+              </div>
+              <h3>{m.title}</h3>
+              {m.composer && <p class="composer">{m.composer}</p>}
+              {m.description && <p>{m.description}</p>}
+            </article>
+          ))}
+        </div>
+      )
+    }
+  </Page>
+</Layout>
+
+<style>
+  .media-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .embed {
+    position: relative;
+    padding-top: 56.25%;
+    background: #000;
+  }
+  .embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .composer {
+    color: var(--color-muted);
+    font-style: italic;
+    margin: 0 0 0.5rem;
+  }
+</style>

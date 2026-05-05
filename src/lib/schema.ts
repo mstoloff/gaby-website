@@ -1,0 +1,55 @@
+import type { CollectionEntry } from 'astro:content';
+
+export const PERSON_SCHEMA = {
+  '@type': 'Person',
+  '@id': 'https://www.gabrielastoloffbaez.com/#person',
+  name: 'Gabriela Stoloff-Báez',
+  jobTitle: 'Soprano',
+  url: 'https://www.gabrielastoloffbaez.com/',
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'Oberlin Conservatory of Music' },
+    { '@type': 'CollegeOrUniversity', name: 'San Francisco Conservatory of Music' },
+  ],
+  award: [
+    '2023 Oregon District Winner, Metropolitan Opera Laffont Competition',
+    '2024 Elihu Hyndman Memorial Award',
+  ],
+} as const;
+
+const STATUS_MAP = {
+  scheduled: 'https://schema.org/EventScheduled',
+  cancelled: 'https://schema.org/EventCancelled',
+  postponed: 'https://schema.org/EventPostponed',
+} as const;
+
+export function eventToSchema(entry: CollectionEntry<'events'>) {
+  const { data } = entry;
+  return {
+    '@type': 'Event',
+    name: data.name,
+    startDate: data.startDate,
+    ...(data.endDate && { endDate: data.endDate }),
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    eventStatus: STATUS_MAP[data.status],
+    location: {
+      '@type': 'Place',
+      ...(data.venue && { name: data.venue }),
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: data.city,
+        ...(data.region && { addressRegion: data.region }),
+        addressCountry: data.country,
+      },
+    },
+    performer: { '@id': PERSON_SCHEMA['@id'] },
+    ...(data.organizer && { organizer: { '@type': 'Organization', name: data.organizer } }),
+    ...(data.url && { url: data.url }),
+  };
+}
+
+export function buildHomepageGraph(events: CollectionEntry<'events'>[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [PERSON_SCHEMA, ...events.map(eventToSchema)],
+  };
+}

@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Page from '../components/Page.astro';
+
+const subject = Astro.url.searchParams.get('subject') || '';
+const subjectQuery = subject ? `?subject=${encodeURIComponent(subject)}` : '';
+const email = 'hello@gabrielastoloffbaez.com';
+const mailto = `mailto:${email}${subjectQuery}`;
+---
+
+<Layout
+  title="Contact — Gabriela Stoloff-Báez"
+  description="Contact soprano Gabriela Stoloff-Báez for management inquiries, press requests, performance bookings, and voice lessons."
+>
+  <Page title="Contact" lead="Bookings, press, and voice lesson inquiries.">
+    {subject && <p class="subject-hint">Subject: <strong>{subject}</strong></p>}
+
+    <p>
+      The fastest way to reach me is by email at
+      <a href={mailto}>{email}</a>.
+    </p>
+
+    <h2>What to include</h2>
+    <ul>
+      <li><strong>Bookings:</strong> dates, venue, repertoire, contact for the music director.</li>
+      <li><strong>Press:</strong> outlet, deadline, what you need (interview, photos, EPK).</li>
+      <li><strong>Voice lessons:</strong> singing background, goals, in-person or online preference.</li>
+    </ul>
+
+    <p style="margin-top: 2.5rem;">
+      <a href={mailto} class="cta">Email me →</a>
+    </p>
+  </Page>
+</Layout>
+
+<style>
+  .subject-hint {
+    background: #f0e9d8;
+    border-left: 3px solid var(--color-accent);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+  .cta {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 2px;
+  }
+  .cta:hover { opacity: 0.9; }
+</style>

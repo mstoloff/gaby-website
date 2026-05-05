@@ -1,0 +1,133 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { buildHomepageGraph } from '../lib/schema';
+
+const allEvents = await getCollection('events');
+const today = new Date();
+const upcoming = allEvents
+  .filter((e) => new Date(e.data.startDate) >= today)
+  .sort((a, b) => +new Date(a.data.startDate) - +new Date(b.data.startDate));
+
+const jsonLd = buildHomepageGraph(upcoming);
+
+const dateFmt = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
+// Date-only strings (YYYY-MM-DD) parse as UTC; full datetimes carry their own offset.
+// Formatting in UTC keeps date-only entries from drifting a day in negative-offset zones.
+const parseDate = (s: string) => new Date(s.length === 10 ? `${s}T00:00:00Z` : s);
+
+const formatRange = (start: string, end?: string) => {
+  const s = dateFmt.format(parseDate(start));
+  if (!end) return s;
+  return `${s} – ${dateFmt.format(parseDate(end))}`;
+};
+---
+
+<Layout
+  title="Gabriela Stoloff-Báez — Puerto Rican Soprano | Des Moines Metro Opera 2026 Apprentice Artist"
+  description="Puerto Rican soprano Gabriela Stoloff-Báez (Oberlin Conservatory, San Francisco Conservatory) performs with Opera Parallèle, Opera Theatre of St. Louis, and Seraphic Fire. Upcoming: Des Moines Metro Opera Apprentice Artist, summer 2026."
+  type="profile"
+  jsonLd={jsonLd}
+>
+  <main>
+    <header class="hero">
+      <h1>Gabriela Stoloff-Báez</h1>
+      <p class="tagline">Puerto Rican Soprano</p>
+    </header>
+
+    <section class="about">
+      <h2>About</h2>
+      <p>
+        Gabriela Stoloff-Báez holds a Bachelor of Music from the Oberlin Conservatory of
+        Music and a Master of Music from the San Francisco Conservatory of Music. She has
+        performed with Opera Parallèle, Opera Theatre of St. Louis, and Seraphic Fire,
+        and was named a 2023 Oregon District winner of the Metropolitan Opera's Laffont
+        Competition and the 2024 Elihu Hyndman Memorial Award recipient.
+      </p>
+    </section>
+
+    <section class="events">
+      <h2>Upcoming</h2>
+      {
+        upcoming.length === 0 ? (
+          <p>No upcoming engagements scheduled.</p>
+        ) : (
+          <ul class="event-list">
+            {upcoming.map((e) => (
+              <li class="event">
+                <time datetime={e.data.startDate}>{formatRange(e.data.startDate, e.data.endDate)}</time>
+                <h3>{e.data.name}</h3>
+                <p class="location">
+                  {[e.data.venue, e.data.city, e.data.region].filter(Boolean).join(' · ')}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+  .hero {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin: 0;
+  }
+  .tagline {
+    color: var(--color-muted);
+    font-style: italic;
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    margin: 0.25rem 0 0;
+  }
+  section + section {
+    margin-top: 3rem;
+  }
+  h2 {
+    font-size: 1.75rem;
+    border-bottom: 1px solid #e5dfd3;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .event-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .event + .event {
+    margin-top: 1.75rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid #ece6d9;
+  }
+  .event time {
+    color: var(--color-accent);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .event h3 {
+    margin: 0.25rem 0 0.5rem;
+    font-size: 1.4rem;
+  }
+  .event .location {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+</style>

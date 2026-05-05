@@ -1,0 +1,28 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <p>© {year} Gabriela Stoloff-Báez</p>
+  <p>
+    <a href="mailto:hello@gabrielastoloffbaez.com">hello@gabrielastoloffbaez.com</a>
+  </p>
+</footer>
+
+<style>
+  .site-footer {
+    max-width: 1080px;
+    margin: 4rem auto 0;
+    padding: 2rem 1.5rem;
+    border-top: 1px solid #ece6d9;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--color-muted);
+    font-size: 0.85rem;
+  }
+  .site-footer p { margin: 0; }
+  .site-footer a { color: var(--color-muted); }
+  .site-footer a:hover { color: var(--color-accent); }
+</style>

@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Page from '../components/Page.astro';
+
+const all = await getCollection('repertoire');
+
+const groups = [
+  { key: 'performed', label: 'Performed' },
+  { key: 'role-ready', label: 'Role-Ready' },
+  { key: 'in-study', label: 'In Study' },
+] as const;
+
+const grouped = groups.map((g) => ({
+  ...g,
+  entries: all
+    .filter((r) => r.data.status === g.key)
+    .sort((a, b) => a.data.composer.localeCompare(b.data.composer)),
+}));
+---
+
+<Layout
+  title="Repertoire — Gabriela Stoloff-Báez"
+  description="Repertoire list for soprano Gabriela Stoloff-Báez: roles performed, roles ready, and roles in study."
+>
+  <Page title="Repertoire" lead="Roles performed, ready, and in study.">
+    {
+      all.length === 0 ? (
+        <p>
+          Repertoire list coming soon. To request a current list,{' '}
+          <a href="/contact/">please get in touch</a>.
+        </p>
+      ) : (
+        grouped.map(
+          (g) =>
+            g.entries.length > 0 && (
+              <section>
+                <h2>{g.label}</h2>
+                <ul class="rep-list">
+                  {g.entries.map((r) => (
+                    <li>
+                      <strong>{r.data.role || r.data.title}</strong>
+                      {r.data.role && <span> · {r.data.title}</span>}
+                      <span class="composer"> — {r.data.composer}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+        )
+      )
+    }
+  </Page>
+</Layout>
+
+<style>
+  .rep-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .rep-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ece6d9;
+  }
+  .composer {
+    color: var(--color-muted);
+    font-style: italic;
+  }
+</style>
