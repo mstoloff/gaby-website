@@ -1,16 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Page from '../components/Page.astro';
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   serviceType: 'Voice Lessons — Junior (ages 12–18)',
   provider: { '@id': 'https://www.gabrielastoloffbaez.com/#person' },
-  audience: {
-    '@type': 'Audience',
-    audienceType: 'Singers ages 12–18',
-  },
+  audience: { '@type': 'Audience', audienceType: 'Singers ages 12–18' },
   description:
     'Voice lessons with Gabriela Stoloff-Báez (Oberlin, SFCM) for the changing and developing voice. Healthy vocal production and musicianship for singers ages 12 through 18.',
 };
@@ -21,62 +17,175 @@ const jsonLd = {
   description="Voice lessons with Gabriela Stoloff-Báez for singers ages 12–18. Healthy vocal production and musicianship for the changing and developing voice."
   jsonLd={jsonLd}
 >
-  <Page
-    title="Voice Lessons"
-    lead="Junior Lessons — designed for singers ages 12–18."
-  >
-    <p>
-      I've created a course on healthy vocal production and musicianship for the
-      changing and developing voice. Drawing on my experience teaching over 100
-      young singers (ages 7–11) between 2021 and 2023, the studio focuses on
-      sustainable technique, ear training, repertoire selection appropriate to
-      each singer's stage of vocal development, and audition preparation.
-    </p>
+  <main class="vl-page">
+    <section class="container vl-hero">
+      <p class="micro vl-eyebrow">Voice Lessons · Ages 12–18</p>
+      <h1>Healthy technique<br />for the changing voice.</h1>
+      <p class="vl-lede">
+        A studio for singers building sustainable classical and crossover
+        technique — junior singers preparing for pre-college and conservatory,
+        high schoolers exploring the stage, and adult learners returning to
+        the room.
+      </p>
+    </section>
 
-    <h2>Who I Teach</h2>
-    <ul>
-      <li>Singers ages 12–18 navigating the changing voice</li>
-      <li>High school students preparing pre-college and conservatory auditions</li>
-      <li>Young singers building healthy classical and crossover technique</li>
-    </ul>
+    <section class="container vl-grid grid12">
+      <article class="vl-block">
+        <h2>Who I teach</h2>
+        <ul>
+          <li>Singers ages 12–18 navigating the changing voice</li>
+          <li>High school students preparing pre-college and conservatory auditions</li>
+          <li>Young singers building healthy classical and crossover technique</li>
+        </ul>
+      </article>
 
-    <h2>What We Work On</h2>
-    <ul>
-      <li>Breath, posture, and resonance for the developing instrument</li>
-      <li>Musicianship: sight-singing, theory, and ear training</li>
-      <li>Repertoire selection by voice type and developmental stage</li>
-      <li>Audition repertoire and performance preparation</li>
-      <li>Foreign-language diction (English, Spanish, Italian, German, French)</li>
-    </ul>
+      <article class="vl-block">
+        <h2>What we work on</h2>
+        <ul>
+          <li>Breath, posture, and resonance for the developing instrument</li>
+          <li>Sight-singing, theory, and ear training</li>
+          <li>Repertoire selection by voice type and developmental stage</li>
+          <li>Audition repertoire and performance preparation</li>
+          <li>Foreign-language diction (English, Spanish, Italian, German, French)</li>
+        </ul>
+      </article>
 
-    <h2>Lesson Details</h2>
-    <p>
-      For lesson formats, scheduling, and current rates,
-      <a href="/contact/?subject=Voice%20lesson%20inquiry">please get in touch</a>.
-      I'll respond with availability and answer any questions about whether the
-      studio is the right fit for your singer.
-    </p>
+      <article class="vl-block vl-credit">
+        <h2>Background</h2>
+        <p>
+          Drawing on experience teaching over 100 young singers (ages 7–11)
+          between 2021 and 2023, I've created a course on healthy vocal
+          production and musicianship for the changing and developing voice.
+        </p>
+        <p>
+          Master of Music in Voice Performance, San Francisco Conservatory.
+          Bachelor of Music in Voice Performance &amp; Musicology, Oberlin
+          Conservatory.
+        </p>
+      </article>
 
-    <p style="margin-top: 2.5rem;">
-      <a href="/contact/?subject=Voice%20lesson%20inquiry" class="cta">
-        Inquire about lessons →
-      </a>
-    </p>
-  </Page>
+      {/* Future environmental portrait (rehearsal room / piano) slots in
+          here — drop a <figure> wrapper and the layout absorbs it. */}
+      <aside class="vl-cta-block">
+        <h2 class="vl-cta-h">Lesson Details</h2>
+        <p>
+          For lesson formats, scheduling, and current rates, please get in
+          touch — I'll respond with availability and answer any questions
+          about whether the studio is the right fit for your singer.
+        </p>
+        <a class="vl-cta" href="/contact/?subject=Voice%20lesson%20inquiry">
+          Inquire about lessons →
+        </a>
+      </aside>
+    </section>
+  </main>
 </Layout>
 
 <style>
-  .cta {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background: var(--color-accent);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 2px;
-    font-size: 0.95rem;
-    letter-spacing: 0.02em;
+  /* Voice Lessons gets the warmest register on the site — terracotta is
+     the lead accent here, oxblood demoted to incidental link color. */
+  .vl-page {
+    --color-page-accent: var(--color-terracotta);
+    padding-top: 1.5rem;
   }
-  .cta:hover {
-    opacity: 0.9;
+
+  .vl-hero {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+    /* Don't override max-width here — .container's max-width: 1280 + auto
+       centering would horizontally shift the hero off-axis from other
+       sections. The h1 has its own clamp() and the lede has max-width: 60ch. */
+  }
+  .vl-eyebrow {
+    color: var(--color-page-accent);
+    opacity: 1;
+  }
+  .vl-hero h1 {
+    margin-top: 1rem;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+  }
+  .vl-lede {
+    margin-top: 1.5rem;
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    font-size: clamp(18px, 1.8vw, 22px);
+    line-height: 1.5;
+    max-width: 60ch;
+  }
+
+  .vl-grid {
+    align-items: start;
+    padding-bottom: 5rem;
+    row-gap: 3rem;
+  }
+
+  .vl-block {
+    grid-column: span 6;
+  }
+  .vl-block h2 {
+    margin: 0 0 1rem;
+    font-size: clamp(22px, 2.2vw, 28px);
+    border-top: 1px solid var(--color-page-accent);
+    padding-top: 1rem;
+  }
+  .vl-block ul {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+  .vl-block li {
+    padding: 0.25rem 0;
+  }
+  .vl-block p {
+    margin: 0 0 0.75rem;
+  }
+
+  .vl-credit { grid-column: 1 / span 12; }
+
+  .vl-cta-block {
+    grid-column: 1 / span 12;
+    background: rgba(201, 124, 93, 0.12); /* terracotta wash */
+    padding: 2.5rem;
+    border-left: 4px solid var(--color-page-accent);
+  }
+  .vl-cta-h {
+    margin: 0 0 0.75rem;
+    font-size: clamp(22px, 2.2vw, 28px);
+  }
+  .vl-cta-block p {
+    margin: 0 0 1.5rem;
+    max-width: 60ch;
+  }
+  .vl-cta {
+    display: inline-block;
+    padding: 0.85rem 1.6rem;
+    background: var(--color-page-accent);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    border-bottom: 0;
+    transition: background 160ms ease;
+  }
+  .vl-cta:hover {
+    background: var(--color-oxblood);
+    color: var(--color-bone);
+  }
+
+  /* Page-specific: terracotta for inline body-text links only. The CTA
+     button has its own bone-on-terracotta treatment and must override. */
+  .vl-page :global(p a),
+  .vl-page :global(li a) {
+    color: var(--color-page-accent);
+  }
+  .vl-page :global(p a:hover),
+  .vl-page :global(li a:hover) {
+    color: var(--color-oxblood);
+  }
+
+  @media (max-width: 768px) {
+    .vl-block { grid-column: 1 / -1; }
+    .vl-cta-block { padding: 1.75rem; }
   }
 </style>

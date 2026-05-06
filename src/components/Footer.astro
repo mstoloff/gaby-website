@@ -3,28 +3,43 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <p>© {year} Gabriela Stoloff-Báez</p>
-  <p class="links">
-    <a href="https://www.instagram.com/gabriela.stoloff.baez/" target="_blank" rel="noopener noreferrer">Instagram</a>
-    <span aria-hidden="true">·</span>
-    <a href="mailto:gabrielastoloffbaez@gmail.com">gabrielastoloffbaez@gmail.com</a>
-  </p>
+  <div class="container footer-row">
+    <p>© {year} Gabriela Stoloff-Báez</p>
+    <p class="links">
+      <a href="https://www.instagram.com/gabriela.stoloff.baez/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <span aria-hidden="true">·</span>
+      <a href="mailto:gabrielastoloffbaez@gmail.com">gabrielastoloffbaez@gmail.com</a>
+    </p>
+  </div>
 </footer>
 
 <style>
+  /* Forest rule = the one-off use of --color-forest on most pages.
+     (Spec allows up to 2 uses per page; the second slot is reserved for
+      page-specific moments like a thin underline on a CTA.) */
   .site-footer {
-    max-width: 1080px;
-    margin: 4rem auto 0;
-    padding: 2rem 1.5rem;
-    border-top: 1px solid #ece6d9;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 1rem;
-    color: var(--color-muted);
-    font-size: 0.85rem;
+    margin-top: 6rem;
+    border-top: 1px solid var(--color-forest);
+    padding: 2rem 0 2.5rem;
+    color: var(--color-ink);
+    opacity: 0.85;
   }
-  .site-footer p { margin: 0; }
-  .site-footer a { color: var(--color-muted); }
-  .site-footer a:hover { color: var(--color-accent); }
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 20px;
+  }
+  .footer-row p { margin: 0; }
+  .footer-row a {
+    color: inherit;
+    border-bottom: 1px solid transparent;
+  }
+  .footer-row a:hover {
+    color: var(--color-terracotta);
+    border-bottom-color: currentColor;
+  }
 </style>

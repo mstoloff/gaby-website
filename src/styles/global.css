@@ -1,0 +1,156 @@
+/* Self-hosted variable fonts. Imported via @fontsource-variable so Vite
+   bundles + hashes them; no requests to fonts.googleapis.com. */
+@import '@fontsource-variable/fraunces/opsz.css';
+@import '@fontsource-variable/fraunces/opsz-italic.css';
+@import '@fontsource-variable/inter/wght.css';
+
+:root {
+  /* Design tokens — Gaby site. Replaced cream/maroon interim palette. */
+  --color-ink: #1a1614;
+  --color-bone: #f4ede1;
+  --color-oxblood: #7a2e2a;
+  --color-terracotta: #c97c5d;
+  --color-sand: #d4c4a8;
+  --color-forest: #3a4a3f;
+
+  /* Semantic aliases — reference these in component CSS, not raw colors. */
+  --color-bg: var(--color-bone);
+  --color-fg: var(--color-ink);
+  --color-accent: var(--color-oxblood);
+  --color-accent-hover: var(--color-terracotta);
+  --color-rule: var(--color-sand);
+
+  /* Typography */
+  --font-serif: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Layout */
+  --max-w: 1280px;
+  --gutter: 32px;
+}
+
+@media (max-width: 768px) {
+  :root { --gutter: 20px; }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--color-bone);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 28px;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  margin: 0;
+  color: var(--color-ink);
+  letter-spacing: -0.005em;
+}
+
+h1 {
+  font-size: 64px;
+  line-height: 72px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 400;
+}
+h3 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 54px; line-height: 62px; }
+  h2 { font-size: 34px; line-height: 41px; }
+  h3 { font-size: 21px; line-height: 28px; }
+  body { font-size: 16px; line-height: 26px; }
+}
+
+p { margin: 0 0 1rem; }
+
+a {
+  color: var(--color-oxblood);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+a:hover {
+  color: var(--color-terracotta);
+  border-bottom-color: currentColor;
+}
+
+/* Italic Spanish-language inline text + pull-quotes share the same treatment. */
+.es,
+em.lang-es,
+[lang='es'] {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-oxblood);
+  font-size: 1.05em;
+}
+
+.pullquote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(20px, 2.4vw, 28px);
+  line-height: 1.45;
+  color: var(--color-oxblood);
+  margin: 0;
+}
+
+.caption {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--color-ink);
+  opacity: 0.78;
+  margin-top: 0.6rem;
+}
+
+.micro {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  opacity: 0.6;
+}
+
+/* 12-column grid utility — opt-in via .grid12. */
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+.grid12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+/* Image-figure pattern: framed (margins), captioned. Never full-bleed. */
+figure { margin: 0; }
+figure img,
+figure picture img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

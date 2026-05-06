@@ -1,13 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import Page from '../components/Page.astro';
+import tudorRuff from '../assets/images/tudor-ruff.webp';
 
 const all = await getCollection('repertoire');
 
 const groups = [
   { key: 'role-ready', label: 'Role-Ready', note: 'Current soprano audition repertoire.' },
-  { key: 'performed', label: 'Performed', note: 'Mainstage and workshop performances. Includes mezzo-soprano roles from prior seasons.' },
+  { key: 'performed', label: 'Performed', note: 'Includes mezzo-soprano roles from prior seasons.' },
   { key: 'in-study', label: 'In Study', note: '' },
 ] as const;
 
@@ -16,13 +17,11 @@ const grouped = groups.map((g) => ({
   entries: all
     .filter((r) => r.data.status === g.key)
     .sort((a, b) => {
-      // Performed: sort by most recent performance year desc.
       if (g.key === 'performed') {
         const ay = Math.max(...(a.data.performances ?? [{ year: 0 }]).map((p) => p.year));
         const by = Math.max(...(b.data.performances ?? [{ year: 0 }]).map((p) => p.year));
         return by - ay;
       }
-      // Otherwise: alpha by composer.
       return a.data.composer.localeCompare(b.data.composer);
     }),
 }));
@@ -32,97 +31,198 @@ const grouped = groups.map((g) => ({
   title="Repertoire — Gabriela Stoloff-Báez"
   description="Repertoire list for soprano Gabriela Stoloff-Báez: roles performed, current soprano audition rep, and roles in study."
 >
-  <Page title="Repertoire" lead="Roles performed, role-ready, and in study.">
-    {
-      grouped.map(
-        (g) =>
-          g.entries.length > 0 && (
-            <section class="rep-section">
-              <h2>{g.label}</h2>
-              {g.note && <p class="section-note">{g.note}</p>}
-              <ul class="rep-list">
-                {g.entries.map((r) => (
-                  <li class="rep-item">
-                    <div class="role">
-                      {r.data.role && <span class="role-name">{r.data.role}</span>}
-                      <span class="opera"> · {r.data.title}</span>
-                    </div>
-                    <div class="meta">
-                      <span class="composer">{r.data.composer}</span>
-                      {r.data.language && <span class="lang"> · {r.data.language}</span>}
-                    </div>
-                    {r.data.notableExcerpts && r.data.notableExcerpts.length > 0 && (
-                      <div class="excerpts">
-                        Aria: <em>{r.data.notableExcerpts.join(' · ')}</em>
-                      </div>
-                    )}
-                    {r.data.performances && r.data.performances.length > 0 && (
-                      <ul class="perf-list">
-                        {r.data.performances.map((p) => (
-                          <li>
-                            {p.venue}, {p.year}
-                            {p.note && <span class="perf-note"> ({p.note})</span>}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )
-      )
-    }
-  </Page>
+  <main>
+    <section class="container rep-hero">
+      <p class="micro">Repertoire</p>
+      <h1>Roles, ready and performed.</h1>
+    </section>
+
+    <section class="container rep-figure-row grid12">
+      <figure class="rep-figure">
+        <Image
+          src={tudorRuff}
+          alt="Gabriela Stoloff-Báez in Tudor-period costume — black velvet hood, white ruff, holding a leather-bound book and a skull."
+          widths={[480, 720, 960]}
+          sizes="(min-width: 1024px) 33vw, 80vw"
+          format="avif"
+          quality={75}
+          loading="eager"
+        />
+        <figcaption class="caption">
+          Mère Marie · <em>Dialogues des Carmélites</em> · Oberlin Opera Theater · 2019.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="container rep-tables">
+      {
+        grouped.map(
+          (g, gi) =>
+            g.entries.length > 0 && (
+              <article class="rep-section">
+                <header class="rep-section-head">
+                  <p class="micro rep-eyebrow">0{gi + 1} · {g.entries.length} {g.entries.length === 1 ? 'work' : 'works'}</p>
+                  <h2>{g.label}</h2>
+                  {g.note && <p class="rep-note">{g.note}</p>}
+                </header>
+                <table class="rep-table">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="col-role">Role</th>
+                      <th scope="col" class="col-work">Work</th>
+                      <th scope="col" class="col-composer">Composer</th>
+                      <th scope="col" class="col-perf">{g.key === 'performed' ? 'Production' : 'Aria'}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {g.entries.map((r) => (
+                      <tr>
+                        <td class="col-role">{r.data.role || '—'}</td>
+                        <td class="col-work"><em>{r.data.title}</em></td>
+                        <td class="col-composer">{r.data.composer}</td>
+                        <td class="col-perf">
+                          {g.key === 'performed' && r.data.performances && (
+                            <ul class="perf-list">
+                              {r.data.performances.map((p) => (
+                                <li>
+                                  {p.venue}, {p.year}
+                                  {p.note && <span class="perf-note"> — {p.note}</span>}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                          {g.key !== 'performed' && r.data.notableExcerpts && (
+                            <em>{r.data.notableExcerpts.join(' · ')}</em>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </article>
+            )
+        )
+      }
+    </section>
+  </main>
 </Layout>
 
 <style>
-  .rep-section + .rep-section {
-    margin-top: 3rem;
+  main { padding-top: 1.5rem; }
+
+  .rep-hero {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
   }
-  .section-note {
-    color: var(--color-muted);
-    font-size: 0.95rem;
-    margin: -0.5rem 0 1.25rem;
-    font-style: italic;
+  .rep-hero h1 {
+    margin-top: 1rem;
+    font-size: clamp(40px, 5.5vw, 72px);
+    line-height: 1.06;
   }
-  .rep-list {
-    list-style: none;
-    padding: 0;
+
+  .rep-figure-row {
+    margin-bottom: 5rem;
+  }
+  .rep-figure {
+    grid-column: 4 / span 6;
     margin: 0;
   }
-  .rep-item {
-    padding: 1.1rem 0;
-    border-bottom: 1px solid #ece6d9;
+  .rep-figure :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
   }
-  .role-name {
-    font-weight: 600;
+
+  .rep-tables { padding-bottom: 5rem; }
+  .rep-section + .rep-section { margin-top: 5rem; }
+  .rep-section-head { margin-bottom: 2rem; }
+  .rep-eyebrow { margin: 0 0 0.75rem; }
+  .rep-section-head h2 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(28px, 3.4vw, 36px);
   }
-  .opera {
+  .rep-note {
+    margin: 0;
     font-family: var(--font-serif);
     font-style: italic;
+    color: var(--color-ink);
+    opacity: 0.7;
+    font-size: 16px;
   }
-  .meta {
-    color: var(--color-muted);
-    font-size: 0.9rem;
-    margin-top: 0.15rem;
+
+  .rep-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 22px;
   }
-  .excerpts {
-    color: var(--color-muted);
-    font-size: 0.9rem;
-    margin-top: 0.25rem;
+  .rep-table thead th {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--color-forest);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    opacity: 0.7;
+  }
+  .rep-table tbody tr {
+    border-bottom: 1px solid rgba(212, 196, 168, 0.5);
+  }
+  .rep-table tbody tr:nth-child(odd) {
+    background: rgba(212, 196, 168, 0.18); /* sand-tinted alternating row */
+  }
+  .rep-table td {
+    padding: 0.75rem 0.75rem;
+    vertical-align: top;
+  }
+  .col-role {
+    width: 22%;
+    font-weight: 500;
+  }
+  .col-work {
+    width: 22%;
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    font-size: 17px;
+  }
+  .col-composer {
+    width: 22%;
+    color: var(--color-ink);
+    opacity: 0.78;
+  }
+  .col-perf {
+    width: 34%;
+    color: var(--color-ink);
+    opacity: 0.78;
   }
   .perf-list {
     list-style: none;
+    margin: 0;
     padding: 0;
-    margin: 0.5rem 0 0;
-    color: var(--color-muted);
-    font-size: 0.85rem;
   }
-  .perf-list li {
-    padding: 0.1rem 0;
-  }
+  .perf-list li + li { margin-top: 0.25rem; }
   .perf-note {
     font-style: italic;
+    opacity: 0.75;
+  }
+
+  @media (max-width: 768px) {
+    .rep-figure { grid-column: 1 / -1; }
+    .rep-table thead { display: none; }
+    .rep-table,
+    .rep-table tbody,
+    .rep-table tr,
+    .rep-table td { display: block; width: 100%; }
+    .rep-table tr {
+      padding: 0.9rem 0.75rem;
+    }
+    .rep-table td { padding: 0.15rem 0; }
+    .col-work { font-size: 18px; margin-bottom: 0.25rem; }
+    .col-composer { font-size: 14px; }
+    .col-perf { font-size: 14px; margin-top: 0.4rem; }
   }
 </style>

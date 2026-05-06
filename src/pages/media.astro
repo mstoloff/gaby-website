@@ -1,93 +1,196 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Page from '../components/Page.astro';
 
 interface MediaItem {
   title: string;
-  composer?: string;
-  type: 'video' | 'audio';
-  embedSrc: string;
+  composer: string;
+  ytId: string;
+  /** Aspect for the poster crop. The video itself plays at native 16:9. */
+  posterAspect: '16/9' | '4/5' | '1/1' | '5/4' | '4/3';
+  /** Grid placement on desktop (column-start / column-span). */
+  gridSpan: { col: string; row?: string };
 }
 
+// Asymmetric 2×2 — each cell crops the YouTube poster differently. On click,
+// the poster swaps to a real <iframe> so we don't pay the YouTube JS cost on
+// initial load (Lighthouse-friendly facade pattern).
 const items: MediaItem[] = [
   {
     title: 'Si, mi chiamano Mimì',
     composer: 'Puccini · La bohème',
-    type: 'video',
-    embedSrc: 'https://www.youtube.com/embed/JayWkDNBRac',
-  },
-  {
-    title: 'Dove sono i bei momenti',
-    composer: 'Mozart · Le nozze di Figaro',
-    type: 'video',
-    embedSrc: 'https://www.youtube.com/embed/io8SFI0ZP_o',
+    ytId: 'JayWkDNBRac',
+    posterAspect: '4/3',
+    gridSpan: { col: '1 / span 7' },
   },
   {
     title: 'Air des Bijoux ("Jewel Song")',
     composer: 'Gounod · Faust',
-    type: 'video',
-    embedSrc: 'https://www.youtube.com/embed/8O3Q0gyMwK0',
+    ytId: '8O3Q0gyMwK0',
+    posterAspect: '4/5',
+    gridSpan: { col: '8 / span 5' },
   },
   {
     title: "Iolanta's Arioso",
     composer: 'Tchaikovsky · Iolanta',
-    type: 'video',
-    embedSrc: 'https://www.youtube.com/embed/BAXqC2w0YxQ',
+    ytId: 'BAXqC2w0YxQ',
+    posterAspect: '1/1',
+    gridSpan: { col: '1 / span 5' },
+  },
+  {
+    title: 'Dove sono i bei momenti',
+    composer: 'Mozart · Le nozze di Figaro',
+    ytId: 'io8SFI0ZP_o',
+    posterAspect: '16/9',
+    gridSpan: { col: '6 / span 7' },
   },
 ];
 ---
 
 <Layout
   title="Media — Gabriela Stoloff-Báez"
-  description="Video and audio recordings of soprano Gabriela Stoloff-Báez performing operatic arias from Puccini, Mozart, Gounod, and Tchaikovsky."
+  description="Video performances of soprano Gabriela Stoloff-Báez: arias from Puccini, Mozart, Gounod, and Tchaikovsky."
 >
-  <Page title="Media" lead="Selected video performances.">
-    <div class="media-grid">
-      {
-        items.map((m) => (
-          <article class="media-item">
-            <div class="embed">
-              <iframe
-                src={m.embedSrc}
-                title={m.title}
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen
-              />
-            </div>
-            <h3>{m.title}</h3>
-            {m.composer && <p class="composer">{m.composer}</p>}
-          </article>
-        ))
-      }
-    </div>
-  </Page>
+  <main>
+    <section class="container media-hero">
+      <p class="micro">Media · Recital &amp; performance</p>
+      <h1>Selected video.</h1>
+    </section>
+
+    <section class="container media-section">
+      <div class="media-grid grid12">
+        {
+          items.map((m) => (
+            <figure
+              class="media-cell"
+              style={`grid-column: ${m.gridSpan.col}; --aspect: ${m.posterAspect};`}
+            >
+              <button
+                class="media-poster"
+                type="button"
+                data-yt={m.ytId}
+                aria-label={`Play ${m.title}`}
+              >
+                <img
+                  src={`https://img.youtube.com/vi/${m.ytId}/hqdefault.jpg`}
+                  srcset={`https://img.youtube.com/vi/${m.ytId}/hqdefault.jpg 480w, https://img.youtube.com/vi/${m.ytId}/maxresdefault.jpg 1280w`}
+                  alt=""
+                  loading="lazy"
+                />
+                <span class="play-icon" aria-hidden="true">
+                  <svg viewBox="0 0 64 64" width="64" height="64">
+                    <circle cx="32" cy="32" r="30" fill="rgba(244, 237, 225, 0.95)" />
+                    <path d="M26 20 L46 32 L26 44 Z" fill="var(--color-oxblood)" />
+                  </svg>
+                </span>
+              </button>
+              <figcaption class="caption">
+                <span class="title">{m.title}</span> · <em>{m.composer}</em>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+  </main>
 </Layout>
 
+<script is:inline>
+  // YouTube facade: replace the poster with a real iframe on first click,
+  // autoplay so the click feels instant. No YouTube JS until a user opts in.
+  document.querySelectorAll('.media-poster').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var id = btn.getAttribute('data-yt');
+      if (!id) return;
+      var iframe = document.createElement('iframe');
+      iframe.src =
+        'https://www.youtube-nocookie.com/embed/' +
+        id +
+        '?autoplay=1&rel=0&modestbranding=1';
+      iframe.title = btn.getAttribute('aria-label') || '';
+      iframe.allow =
+        'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allowFullscreen = true;
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.border = '0';
+      iframe.style.position = 'absolute';
+      iframe.style.inset = '0';
+      btn.replaceWith(iframe);
+    });
+  });
+</script>
+
 <style>
+  main { padding-top: 1.5rem; }
+
+  .media-hero {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+  }
+  .media-hero h1 {
+    margin-top: 1rem;
+    font-size: clamp(40px, 5.5vw, 72px);
+    line-height: 1.06;
+  }
+
+  .media-section { padding-bottom: 5rem; }
   .media-grid {
-    display: grid;
-    gap: 2.5rem;
+    row-gap: 3rem;
   }
-  .media-item h3 {
-    margin: 1rem 0 0.25rem;
+  .media-cell {
+    margin: 0;
+    /* --aspect set inline per item */
   }
-  .embed {
+  .media-poster {
     position: relative;
-    padding-top: 56.25%;
-    background: #000;
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--aspect, 16 / 9);
+    overflow: hidden;
+    border: 0;
+    padding: 0;
+    background: var(--color-ink);
+    cursor: pointer;
   }
-  .embed iframe {
+  .media-poster img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    border: 0;
+    object-fit: cover;
+    transition: transform 320ms ease, filter 320ms ease;
   }
-  .composer {
-    color: var(--color-muted);
-    font-style: italic;
-    margin: 0;
+  .media-poster:hover img,
+  .media-poster:focus-visible img {
+    transform: scale(1.02);
+    filter: brightness(0.85);
+  }
+  .play-icon {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+  .play-icon svg {
+    width: clamp(48px, 6vw, 72px);
+    height: auto;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
+    transition: transform 200ms ease;
+  }
+  .media-poster:hover .play-icon svg,
+  .media-poster:focus-visible .play-icon svg {
+    transform: scale(1.05);
+  }
+
+  .media-cell figcaption {
+    margin-top: 0.6rem;
+  }
+  .title { font-weight: 500; }
+
+  @media (max-width: 768px) {
+    .media-cell { grid-column: 1 / -1 !important; }
+    .media-grid { row-gap: 2rem; }
   }
 </style>

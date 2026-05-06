@@ -9,66 +9,173 @@ const links = [
 ];
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const isActive = (href: string) => {
+const isActiveNav = (href: string) => {
   const normalized = href.replace(/\/$/, '') || '/';
   return normalized === path;
 };
+
+// Locale detection. /es/* and /it/* routes are Spanish/Italian respectively;
+// everything else is English. The /es and /it routes don't exist yet — the
+// toggle UI is in place but those locales will 404 until translated content
+// lands. Adding a new locale here is just: add to LOCALES, add a route, done.
+type LocaleCode = 'en' | 'es' | 'it';
+interface Locale { code: LocaleCode; label: string; prefix: string }
+const LOCALES: Locale[] = [
+  { code: 'en', label: 'EN', prefix: '' },
+  { code: 'es', label: 'ES', prefix: '/es' },
+  { code: 'it', label: 'IT', prefix: '/it' },
+];
+
+// Find current locale by longest matching prefix (so /es and /it beat '').
+const current: Locale = LOCALES
+  .filter((l) => l.prefix === '' || path === l.prefix || path.startsWith(`${l.prefix}/`))
+  .sort((a, b) => b.prefix.length - a.prefix.length)[0]!;
+
+// Strip the current prefix off the path; what's left is the "shared" part.
+const sharedPath = current.prefix
+  ? path.slice(current.prefix.length) || '/'
+  : path;
+
+const hrefFor = (l: Locale) =>
+  l.prefix
+    ? `${l.prefix}${sharedPath === '/' ? '' : sharedPath}/`.replace(/\/+$/, '/')
+    : sharedPath;
 ---
 
 <header class="site-header">
-  <a href="/" class="brand">Gabriela Stoloff-Báez</a>
-  <nav aria-label="Primary">
-    <ul>
-      {
-        links.map((l) => (
-          <li>
-            <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>
-          </li>
-        ))
-      }
-    </ul>
-  </nav>
+  <div class="container header-row">
+    <a href={current.prefix ? `${current.prefix}/` : '/'} class="wordmark" aria-label="Gabriela Stoloff-Báez — Home">
+      Gabriela Stoloff-B<span class="accent-a">á</span>ez
+    </a>
+
+    <nav class="primary" aria-label="Primary">
+      <ul>
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} aria-current={isActiveNav(l.href) ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="locale" aria-label="Language">
+      {LOCALES.map((l, i) => (
+        <>
+          {i > 0 && <span aria-hidden="true">/</span>}
+          <a href={hrefFor(l)} class:list={[{ active: l.code === current.code }]} data-locale={l.code}>
+            {l.label}
+          </a>
+        </>
+      ))}
+    </div>
+  </div>
 </header>
+
+<script is:inline>
+  // Persist last-chosen locale; default to URL-derived value otherwise.
+  (function () {
+    try {
+      var here = location.pathname;
+      var derived = 'en';
+      if (here.indexOf('/es') === 0) derived = 'es';
+      else if (here.indexOf('/it') === 0) derived = 'it';
+      var stored = localStorage.getItem('gsb_locale');
+      if (!stored) localStorage.setItem('gsb_locale', derived);
+      // Save selection on click so the next page nav respects it.
+      document.querySelectorAll('.locale a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          localStorage.setItem('gsb_locale', a.getAttribute('data-locale'));
+        });
+      });
+    } catch (e) {}
+  })();
+</script>
 
 <style>
   .site-header {
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 1.5rem 1.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
-    border-bottom: 1px solid #ece6d9;
+    background: var(--color-bone);
+    border-bottom: 1px solid var(--color-sand);
   }
-  .brand {
+  .header-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    padding-top: 1.4rem;
+    padding-bottom: 1.4rem;
+  }
+  .wordmark {
     font-family: var(--font-serif);
-    font-size: 1.25rem;
-    color: var(--color-fg);
-    text-decoration: none;
-    letter-spacing: 0.01em;
+    font-optical-sizing: auto;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    border-bottom: 0;
   }
-  nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .wordmark:hover { color: var(--color-oxblood); }
+  .accent-a { font-style: normal; }
+
+  .primary ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.25rem;
+    gap: 1.6rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
   }
-  nav a {
-    color: var(--color-muted);
-    text-decoration: none;
-    font-size: 0.85rem;
+  .primary a {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    color: var(--color-ink);
+    opacity: 0.7;
+    border-bottom: 0;
   }
-  nav a:hover,
-  nav a[aria-current='page'] {
-    color: var(--color-fg);
+  .primary a:hover,
+  .primary a[aria-current='page'] {
+    opacity: 1;
+    color: var(--color-ink);
   }
-  nav a[aria-current='page'] {
-    border-bottom: 1px solid var(--color-accent);
+  .primary a[aria-current='page'] {
+    border-bottom: 1px solid var(--color-oxblood);
+    padding-bottom: 4px;
+  }
+
+  .locale {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    opacity: 0.7;
+  }
+  .locale a {
+    color: inherit;
+    border-bottom: 0;
+  }
+  .locale a.active { color: var(--color-oxblood); opacity: 1; }
+  .locale span { opacity: 0.4; }
+
+  @media (max-width: 900px) {
+    .header-row {
+      grid-template-columns: auto auto;
+      grid-template-areas: 'wordmark locale' 'nav nav';
+      row-gap: 1rem;
+    }
+    .wordmark { grid-area: wordmark; }
+    .locale { grid-area: locale; justify-self: end; }
+    .primary { grid-area: nav; }
+    .primary ul { justify-content: flex-start; gap: 1.1rem; }
   }
 </style>
