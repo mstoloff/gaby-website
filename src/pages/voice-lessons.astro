@@ -5,60 +5,61 @@ import Page from '../components/Page.astro';
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  serviceType: 'Voice Lessons',
+  serviceType: 'Voice Lessons — Junior (ages 12–18)',
   provider: { '@id': 'https://www.gabrielastoloffbaez.com/#person' },
-  areaServed: 'Worldwide (online); in-person in [CITY]',
   audience: {
     '@type': 'Audience',
-    audienceType: 'Singers — pre-college through professional',
+    audienceType: 'Singers ages 12–18',
   },
   description:
-    'Classical and crossover voice lessons with Gabriela Stoloff-Báez (Oberlin, SFCM). Audition coaching available in English, Spanish, Italian, German, and French.',
+    'Voice lessons with Gabriela Stoloff-Báez (Oberlin, SFCM) for the changing and developing voice. Healthy vocal production and musicianship for singers ages 12 through 18.',
 };
 ---
 
 <Layout
   title="Voice Lessons — Gabriela Stoloff-Báez"
-  description="Classical and crossover voice lessons with Gabriela Stoloff-Báez. Audition coaching, college and conservatory prep, online worldwide and in person."
+  description="Voice lessons with Gabriela Stoloff-Báez for singers ages 12–18. Healthy vocal production and musicianship for the changing and developing voice."
   jsonLd={jsonLd}
 >
   <Page
     title="Voice Lessons"
-    lead="Healthy classical and crossover technique — for the next audition or the next decade."
+    lead="Junior Lessons — designed for singers ages 12–18."
   >
     <p>
-      I teach singers building healthy classical and crossover technique —
-      undergraduates preparing audition rep, adults returning to the studio, and
-      high-school students working toward conservatory. Lessons are offered in
-      person in [CITY] and online worldwide. Repertoire coaching available in
-      English, Spanish, Italian, German, and French.
+      I've created a course on healthy vocal production and musicianship for the
+      changing and developing voice. Drawing on my experience teaching over 100
+      young singers (ages 7–11) between 2021 and 2023, the studio focuses on
+      sustainable technique, ear training, repertoire selection appropriate to
+      each singer's stage of vocal development, and audition preparation.
     </p>
 
     <h2>Who I Teach</h2>
     <ul>
-      <li>Pre-college and conservatory audition prep</li>
-      <li>Undergraduate and graduate-level singers</li>
-      <li>Professional singers maintaining technique between contracts</li>
-      <li>Adult learners returning to the studio</li>
+      <li>Singers ages 12–18 navigating the changing voice</li>
+      <li>High school students preparing pre-college and conservatory auditions</li>
+      <li>Young singers building healthy classical and crossover technique</li>
     </ul>
 
-    <h2>Formats</h2>
+    <h2>What We Work On</h2>
     <ul>
-      <li>60-minute in-person lessons</li>
-      <li>45- or 60-minute online lessons (Zoom)</li>
-      <li>Targeted audition coaching</li>
+      <li>Breath, posture, and resonance for the developing instrument</li>
+      <li>Musicianship: sight-singing, theory, and ear training</li>
+      <li>Repertoire selection by voice type and developmental stage</li>
+      <li>Audition repertoire and performance preparation</li>
+      <li>Foreign-language diction (English, Spanish, Italian, German, French)</li>
     </ul>
 
-    <h2>Pricing</h2>
+    <h2>Lesson Details</h2>
     <p>
-      Trial lesson: <strong>$[X]</strong> · Single lesson: <strong>$[X]</strong> ·
-      Four-lesson package: <strong>$[X]</strong>
+      For lesson formats, scheduling, and current rates,
+      <a href="/contact/?subject=Voice%20lesson%20inquiry">please get in touch</a>.
+      I'll respond with availability and answer any questions about whether the
+      studio is the right fit for your singer.
     </p>
-    <p><em>Replace bracketed amounts with your current rates.</em></p>
 
     <p style="margin-top: 2.5rem;">
       <a href="/contact/?subject=Voice%20lesson%20inquiry" class="cta">
-        Book a trial lesson →
+        Inquire about lessons →
       </a>
     </p>
   </Page>
