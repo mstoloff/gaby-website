@@ -6,65 +6,123 @@ import Page from '../components/Page.astro';
 const all = await getCollection('repertoire');
 
 const groups = [
-  { key: 'performed', label: 'Performed' },
-  { key: 'role-ready', label: 'Role-Ready' },
-  { key: 'in-study', label: 'In Study' },
+  { key: 'role-ready', label: 'Role-Ready', note: 'Current soprano audition repertoire.' },
+  { key: 'performed', label: 'Performed', note: 'Mainstage and workshop performances. Includes mezzo-soprano roles from prior seasons.' },
+  { key: 'in-study', label: 'In Study', note: '' },
 ] as const;
 
 const grouped = groups.map((g) => ({
   ...g,
   entries: all
     .filter((r) => r.data.status === g.key)
-    .sort((a, b) => a.data.composer.localeCompare(b.data.composer)),
+    .sort((a, b) => {
+      // Performed: sort by most recent performance year desc.
+      if (g.key === 'performed') {
+        const ay = Math.max(...(a.data.performances ?? [{ year: 0 }]).map((p) => p.year));
+        const by = Math.max(...(b.data.performances ?? [{ year: 0 }]).map((p) => p.year));
+        return by - ay;
+      }
+      // Otherwise: alpha by composer.
+      return a.data.composer.localeCompare(b.data.composer);
+    }),
 }));
 ---
 
 <Layout
   title="Repertoire — Gabriela Stoloff-Báez"
-  description="Repertoire list for soprano Gabriela Stoloff-Báez: roles performed, roles ready, and roles in study."
+  description="Repertoire list for soprano Gabriela Stoloff-Báez: roles performed, current soprano audition rep, and roles in study."
 >
-  <Page title="Repertoire" lead="Roles performed, ready, and in study.">
+  <Page title="Repertoire" lead="Roles performed, role-ready, and in study.">
     {
-      all.length === 0 ? (
-        <p>
-          Repertoire list coming soon. To request a current list,{' '}
-          <a href="/contact/">please get in touch</a>.
-        </p>
-      ) : (
-        grouped.map(
-          (g) =>
-            g.entries.length > 0 && (
-              <section>
-                <h2>{g.label}</h2>
-                <ul class="rep-list">
-                  {g.entries.map((r) => (
-                    <li>
-                      <strong>{r.data.role || r.data.title}</strong>
-                      {r.data.role && <span> · {r.data.title}</span>}
-                      <span class="composer"> — {r.data.composer}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )
-        )
+      grouped.map(
+        (g) =>
+          g.entries.length > 0 && (
+            <section class="rep-section">
+              <h2>{g.label}</h2>
+              {g.note && <p class="section-note">{g.note}</p>}
+              <ul class="rep-list">
+                {g.entries.map((r) => (
+                  <li class="rep-item">
+                    <div class="role">
+                      {r.data.role && <span class="role-name">{r.data.role}</span>}
+                      <span class="opera"> · {r.data.title}</span>
+                    </div>
+                    <div class="meta">
+                      <span class="composer">{r.data.composer}</span>
+                      {r.data.language && <span class="lang"> · {r.data.language}</span>}
+                    </div>
+                    {r.data.notableExcerpts && r.data.notableExcerpts.length > 0 && (
+                      <div class="excerpts">
+                        Aria: <em>{r.data.notableExcerpts.join(' · ')}</em>
+                      </div>
+                    )}
+                    {r.data.performances && r.data.performances.length > 0 && (
+                      <ul class="perf-list">
+                        {r.data.performances.map((p) => (
+                          <li>
+                            {p.venue}, {p.year}
+                            {p.note && <span class="perf-note"> ({p.note})</span>}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
       )
     }
   </Page>
 </Layout>
 
 <style>
+  .rep-section + .rep-section {
+    margin-top: 3rem;
+  }
+  .section-note {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    margin: -0.5rem 0 1.25rem;
+    font-style: italic;
+  }
   .rep-list {
     list-style: none;
     padding: 0;
     margin: 0;
   }
-  .rep-list li {
-    padding: 0.5rem 0;
+  .rep-item {
+    padding: 1.1rem 0;
     border-bottom: 1px solid #ece6d9;
   }
-  .composer {
+  .role-name {
+    font-weight: 600;
+  }
+  .opera {
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+  .meta {
     color: var(--color-muted);
+    font-size: 0.9rem;
+    margin-top: 0.15rem;
+  }
+  .excerpts {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
+  .perf-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.85rem;
+  }
+  .perf-list li {
+    padding: 0.1rem 0;
+  }
+  .perf-note {
     font-style: italic;
   }
 </style>

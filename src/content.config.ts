@@ -1,5 +1,5 @@
 import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { glob, file } from 'astro/loaders';
 
 const events = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/events' }),
@@ -19,7 +19,7 @@ const events = defineCollection({
 });
 
 const repertoire = defineCollection({
-  loader: glob({ pattern: '**/*.json', base: './src/content/repertoire' }),
+  loader: file('./src/content/repertoire.json'),
   schema: z.object({
     title: z.string(),
     composer: z.string(),
@@ -28,6 +28,15 @@ const repertoire = defineCollection({
     voicePart: z.string().default('Soprano'),
     language: z.string().optional(),
     status: z.enum(['performed', 'role-ready', 'in-study']),
+    performances: z
+      .array(
+        z.object({
+          venue: z.string(),
+          year: z.number(),
+          note: z.string().optional(),
+        })
+      )
+      .optional(),
     notableExcerpts: z.array(z.string()).optional(),
   }),
 });

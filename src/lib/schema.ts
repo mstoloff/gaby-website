@@ -6,13 +6,19 @@ export const PERSON_SCHEMA = {
   name: 'Gabriela Stoloff-Báez',
   jobTitle: 'Soprano',
   url: 'https://www.gabrielastoloffbaez.com/',
+  email: 'gabrielastoloffbaez@gmail.com',
+  sameAs: ['https://www.instagram.com/gabriela.stoloff.baez/'],
+  knowsLanguage: ['en', 'es', 'it', 'de', 'fr'],
   alumniOf: [
     { '@type': 'CollegeOrUniversity', name: 'Oberlin Conservatory of Music' },
     { '@type': 'CollegeOrUniversity', name: 'San Francisco Conservatory of Music' },
   ],
   award: [
-    '2023 Oregon District Winner, Metropolitan Opera Laffont Competition',
-    '2024 Elihu Hyndman Memorial Award',
+    '2024 Elihu Hyndman Memorial Award (Opera Theatre of Saint Louis)',
+    '2023 Oregon District Winner & Northwest Region Award Recipient, Metropolitan Opera Laffont Competition',
+    '2021 Joan & David Traitel Vocal Scholarship (San Francisco Conservatory)',
+    '2021 Dix & Didi Boring Endowed Scholarship for Voice (San Francisco Conservatory)',
+    "2020 Margot Bos Stambler '84 Professional Development Award (Oberlin Conservatory)",
   ],
 } as const;
 

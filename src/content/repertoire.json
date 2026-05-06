@@ -1,0 +1,219 @@
+[
+  {
+    "id": "marguerite-faust",
+    "title": "Faust",
+    "composer": "Charles Gounod",
+    "role": "Marguerite",
+    "type": "opera",
+    "voicePart": "Soprano",
+    "language": "French",
+    "status": "role-ready",
+    "notableExcerpts": ["Air des Bijoux (\"Jewel Song\")"]
+  },
+  {
+    "id": "mimi-la-boheme",
+    "title": "La bohème",
+    "composer": "Giacomo Puccini",
+    "role": "Mimì",
+    "type": "opera",
+    "voicePart": "Soprano",
+    "language": "Italian",
+    "status": "role-ready",
+    "notableExcerpts": ["Donde lieta uscì"]
+  },
+  {
+    "id": "agathe-der-freischutz",
+    "title": "Der Freischütz",
+    "composer": "Carl Maria von Weber",
+    "role": "Agathe",
+    "type": "opera",
+    "voicePart": "Soprano",
+    "language": "German",
+    "status": "role-ready",
+    "notableExcerpts": ["Leise, leise, fromme Weise"]
+  },
+  {
+    "id": "susannah-polk-susannah",
+    "title": "Susannah",
+    "composer": "Carlisle Floyd",
+    "role": "Susannah Polk",
+    "type": "opera",
+    "voicePart": "Soprano",
+    "language": "English",
+    "status": "role-ready",
+    "notableExcerpts": ["The trees on the mountains"]
+  },
+  {
+    "id": "rigoletto",
+    "title": "Rigoletto",
+    "composer": "Giuseppe Verdi",
+    "role": "Maddalena / Contessa di Ceprano",
+    "type": "opera",
+    "language": "Italian",
+    "status": "performed",
+    "performances": [{ "venue": "Savannah Voice Festival", "year": 2025 }]
+  },
+  {
+    "id": "anne-kronenberg-harvey-milk",
+    "title": "Harvey Milk Reimagined",
+    "composer": "Stewart Wallace",
+    "role": "Anne Kronenberg",
+    "type": "opera",
+    "language": "English",
+    "status": "performed",
+    "performances": [{ "venue": "Opera Parallèle", "year": 2025 }]
+  },
+  {
+    "id": "ruth-pirates-of-penzance",
+    "title": "The Pirates of Penzance",
+    "composer": "Arthur Sullivan (libretto: W. S. Gilbert)",
+    "role": "Ruth",
+    "type": "opera",
+    "language": "English",
+    "status": "performed",
+    "performances": [{ "venue": "Opera Theatre of St. Louis", "year": 2025 }]
+  },
+  {
+    "id": "ramona-the-eleanors",
+    "title": "The Eleanors",
+    "composer": "Composer TBD",
+    "role": "Ramona",
+    "type": "opera",
+    "language": "English",
+    "status": "performed",
+    "performances": [
+      { "venue": "National Opera Association", "year": 2025 },
+      { "venue": "Savannah Voice Festival", "year": 2024 }
+    ]
+  },
+  {
+    "id": "rosina-barber-of-seville",
+    "title": "The Barber of Seville",
+    "composer": "Gioachino Rossini",
+    "role": "Rosina",
+    "type": "opera",
+    "language": "Italian",
+    "status": "performed",
+    "performances": [{ "venue": "Opera Theatre of St. Louis", "year": 2024, "note": "Cover" }]
+  },
+  {
+    "id": "scribe-galileo-galilei",
+    "title": "Galileo Galilei",
+    "composer": "Philip Glass",
+    "role": "Scribe",
+    "type": "opera",
+    "language": "English",
+    "status": "performed",
+    "performances": [{ "venue": "Opera Theatre of St. Louis", "year": 2024 }]
+  },
+  {
+    "id": "rosie-casals-birds-and-balls",
+    "title": "Birds & Balls",
+    "composer": "Composer TBD",
+    "role": "Rosie Casals",
+    "type": "opera",
+    "language": "English",
+    "status": "performed",
+    "performances": [{ "venue": "Opera Parallèle", "year": 2024 }]
+  },
+  {
+    "id": "zita-gianni-schicchi",
+    "title": "Gianni Schicchi",
+    "composer": "Giacomo Puccini",
+    "role": "Zita",
+    "type": "opera",
+    "language": "Italian",
+    "status": "performed",
+    "performances": [{ "venue": "Chautauqua Opera Company and Conservatory", "year": 2023 }]
+  },
+  {
+    "id": "zia-principessa-suor-angelica",
+    "title": "Suor Angelica",
+    "composer": "Giacomo Puccini",
+    "role": "La Zia Principessa",
+    "type": "opera",
+    "language": "Italian",
+    "status": "performed",
+    "performances": [{ "venue": "Chautauqua Opera Company and Conservatory", "year": 2023 }]
+  },
+  {
+    "id": "mrs-ott-susannah",
+    "title": "Susannah",
+    "composer": "Carlisle Floyd",
+    "role": "Mrs. Ott",
+    "type": "opera",
+    "language": "English",
+    "status": "performed",
+    "performances": [{ "venue": "Opera Theatre of St. Louis", "year": 2023 }]
+  },
+  {
+    "id": "mother-the-consul",
+    "title": "The Consul",
+    "composer": "Gian Carlo Menotti",
+    "role": "Mother",
+    "type": "opera",
+    "language": "English",
+    "status": "performed",
+    "performances": [{ "venue": "SFCM Opera Theater", "year": 2023 }]
+  },
+  {
+    "id": "foresters-wife-cunning-little-vixen",
+    "title": "The Cunning Little Vixen",
+    "composer": "Leoš Janáček",
+    "role": "Forester's wife",
+    "type": "opera",
+    "language": "Czech",
+    "status": "performed",
+    "performances": [{ "venue": "Chautauqua Opera Company and Conservatory", "year": 2022 }]
+  },
+  {
+    "id": "cornelia-giulio-cesare",
+    "title": "Giulio Cesare",
+    "composer": "George Frideric Handel",
+    "role": "Cornelia",
+    "type": "opera",
+    "language": "Italian",
+    "status": "performed",
+    "performances": [{ "venue": "SFCM Historical Performance", "year": 2022 }]
+  },
+  {
+    "id": "sandman-hansel-and-gretel",
+    "title": "Hansel and Gretel",
+    "composer": "Engelbert Humperdinck",
+    "role": "Sandman",
+    "type": "opera",
+    "language": "German",
+    "status": "performed",
+    "performances": [{ "venue": "SFCM Opera Theater", "year": 2021 }]
+  },
+  {
+    "id": "dorabella-cosi-fan-tutte",
+    "title": "Così fan tutte",
+    "composer": "Wolfgang Amadeus Mozart",
+    "role": "Dorabella",
+    "type": "opera",
+    "language": "Italian",
+    "status": "performed",
+    "performances": [{ "venue": "Oberlin Opera Theater", "year": 2020 }]
+  },
+  {
+    "id": "mere-marie-dialogues-des-carmelites",
+    "title": "Dialogues des Carmélites",
+    "composer": "Francis Poulenc",
+    "role": "Mère Marie",
+    "type": "opera",
+    "language": "French",
+    "status": "performed",
+    "performances": [{ "venue": "Oberlin Opera Theater", "year": 2019 }]
+  },
+  {
+    "id": "dinah-trouble-in-tahiti",
+    "title": "Trouble in Tahiti",
+    "composer": "Leonard Bernstein",
+    "role": "Dinah",
+    "type": "opera",
+    "language": "English",
+    "status": "performed",
+    "performances": [{ "venue": "Oberlin Opera Theater", "year": 2018 }]
+  }
+]
