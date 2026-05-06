@@ -1,3 +1,5 @@
+// Forces a clean Worker rebuild after dashboard-side variable changes
+// reverted the active version to a static-assets-only deploy.
 interface Env {
   ASSETS: Fetcher;
   BASIC_AUTH_PASSWORD?: string;
