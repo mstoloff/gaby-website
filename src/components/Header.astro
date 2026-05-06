@@ -1,45 +1,60 @@
 ---
-const links = [
-  { href: '/', label: 'Home' },
-  { href: '/about/', label: 'About' },
-  { href: '/media/', label: 'Media' },
-  { href: '/repertoire/', label: 'Repertoire' },
-  { href: '/voice-lessons/', label: 'Voice Lessons' },
-  { href: '/contact/', label: 'Contact' },
-];
+import { NAV } from '../i18n';
+import type { Locale } from '../i18n';
 
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const isActiveNav = (href: string) => {
-  const normalized = href.replace(/\/$/, '') || '/';
-  return normalized === path;
-};
-
-// Locale detection. /es/* and /it/* routes are Spanish/Italian respectively;
-// everything else is English. The /es and /it routes don't exist yet — the
-// toggle UI is in place but those locales will 404 until translated content
-// lands. Adding a new locale here is just: add to LOCALES, add a route, done.
-type LocaleCode = 'en' | 'es' | 'it';
-interface Locale { code: LocaleCode; label: string; prefix: string }
-const LOCALES: Locale[] = [
+// Adding a new locale: add to LOCALES_META, add a key in src/i18n/index.ts
+// (NAV + COMMON), add the route files, done.
+interface LocaleMeta { code: Locale; label: string; prefix: string }
+const LOCALES_META: LocaleMeta[] = [
   { code: 'en', label: 'EN', prefix: '' },
   { code: 'es', label: 'ES', prefix: '/es' },
   { code: 'it', label: 'IT', prefix: '/it' },
 ];
 
-// Find current locale by longest matching prefix (so /es and /it beat '').
-const current: Locale = LOCALES
+// Pages that exist in non-EN locales. Other routes always serve English.
+const TRANSLATED_SLUGS = new Set(['', 'about']);
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const current: LocaleMeta = LOCALES_META
   .filter((l) => l.prefix === '' || path === l.prefix || path.startsWith(`${l.prefix}/`))
   .sort((a, b) => b.prefix.length - a.prefix.length)[0]!;
 
-// Strip the current prefix off the path; what's left is the "shared" part.
-const sharedPath = current.prefix
-  ? path.slice(current.prefix.length) || '/'
-  : path;
+// Slug = the part of the path after the locale prefix, with leading '/' stripped.
+const slug = (current.prefix
+  ? path.slice(current.prefix.length)
+  : path
+).replace(/^\//, '').replace(/\/$/, '');
 
-const hrefFor = (l: Locale) =>
-  l.prefix
-    ? `${l.prefix}${sharedPath === '/' ? '' : sharedPath}/`.replace(/\/+$/, '/')
-    : sharedPath;
+// Build nav links per current locale. Translated slugs route to /{prefix}/{slug}/,
+// untranslated routes always go to the English /{slug}/.
+const navLinks = [
+  { slug: '', label: NAV[current.code].home },
+  { slug: 'about', label: NAV[current.code].about },
+  { slug: 'media', label: NAV[current.code].media },
+  { slug: 'repertoire', label: NAV[current.code].repertoire },
+  { slug: 'voice-lessons', label: NAV[current.code].voiceLessons },
+  { slug: 'contact', label: NAV[current.code].contact },
+];
+
+const hrefForSlug = (s: string) => {
+  const isTranslated = TRANSLATED_SLUGS.has(s);
+  const prefix = isTranslated ? current.prefix : '';
+  const tail = s ? `${s}/` : '';
+  return `${prefix || ''}/${tail}` || '/';
+};
+
+const isActiveNav = (s: string) => s === slug;
+
+// Locale-toggle href: stay on same page if it's translated; otherwise drop to
+// the locale's homepage. Avoids 404s on toggle.
+const hrefForLocale = (l: LocaleMeta) => {
+  if (TRANSLATED_SLUGS.has(slug)) {
+    const tail = slug ? `${slug}/` : '';
+    return l.prefix ? `${l.prefix}/${tail}` : `/${tail}`;
+  }
+  // Untranslated page: dropping locale toggle goes to the locale's home.
+  return l.prefix ? `${l.prefix}/` : '/';
+};
 ---
 
 <header class="site-header">
@@ -51,9 +66,12 @@ const hrefFor = (l: Locale) =>
     <nav class="primary" aria-label="Primary">
       <ul>
         {
-          links.map((l) => (
+          navLinks.map((l) => (
             <li>
-              <a href={l.href} aria-current={isActiveNav(l.href) ? 'page' : undefined}>
+              <a
+                href={hrefForSlug(l.slug)}
+                aria-current={isActiveNav(l.slug) ? 'page' : undefined}
+              >
                 {l.label}
               </a>
             </li>
@@ -63,10 +81,10 @@ const hrefFor = (l: Locale) =>
     </nav>
 
     <div class="locale" aria-label="Language">
-      {LOCALES.map((l, i) => (
+      {LOCALES_META.map((l, i) => (
         <>
           {i > 0 && <span aria-hidden="true">/</span>}
-          <a href={hrefFor(l)} class:list={[{ active: l.code === current.code }]} data-locale={l.code}>
+          <a href={hrefForLocale(l)} class:list={[{ active: l.code === current.code }]} data-locale={l.code}>
             {l.label}
           </a>
         </>
@@ -76,7 +94,6 @@ const hrefFor = (l: Locale) =>
 </header>
 
 <script is:inline>
-  // Persist last-chosen locale; default to URL-derived value otherwise.
   (function () {
     try {
       var here = location.pathname;
@@ -85,7 +102,6 @@ const hrefFor = (l: Locale) =>
       else if (here.indexOf('/it') === 0) derived = 'it';
       var stored = localStorage.getItem('gsb_locale');
       if (!stored) localStorage.setItem('gsb_locale', derived);
-      // Save selection on click so the next page nav respects it.
       document.querySelectorAll('.locale a').forEach(function (a) {
         a.addEventListener('click', function () {
           localStorage.setItem('gsb_locale', a.getAttribute('data-locale'));

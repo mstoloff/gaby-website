@@ -3,6 +3,8 @@ import BaseHead from '../components/BaseHead.astro';
 import JsonLd from '../components/JsonLd.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { LOCALE_HTML_LANG } from '../i18n';
+import type { Locale } from '../i18n';
 import '../styles/global.css';
 
 interface Props {
@@ -11,13 +13,16 @@ interface Props {
   image?: string;
   type?: 'website' | 'article' | 'profile';
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** Defaults to 'en' so untranslated pages don't have to thread the prop. */
+  locale?: Locale;
 }
 
-const { title, description, image, type, jsonLd } = Astro.props;
+const { title, description, image, type, jsonLd, locale = 'en' } = Astro.props;
+const lang = LOCALE_HTML_LANG[locale];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <BaseHead title={title} description={description} image={image} type={type} />
     {jsonLd && <JsonLd data={jsonLd} />}
