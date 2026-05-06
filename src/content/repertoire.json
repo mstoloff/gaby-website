@@ -107,14 +107,16 @@
     "performances": [{ "venue": "Opera Theatre of St. Louis", "year": 2024 }]
   },
   {
-    "id": "rosie-casals-birds-and-balls",
-    "title": "Birds & Balls",
-    "composer": "Composer TBD",
+    "id": "rosie-casals-balls",
+    "title": "Balls",
+    "composer": "Laura Karpman (libretto: Gail Collins)",
     "role": "Rosie Casals",
     "type": "opera",
     "language": "English",
     "status": "performed",
-    "performances": [{ "venue": "Opera Parallèle", "year": 2024 }]
+    "performances": [
+      { "venue": "Opera Parallèle", "year": 2024, "note": "World premiere · double-bill 'Birds & Balls' with Vinkensport (David T. Little / Royce Vavrek)" }
+    ]
   },
   {
     "id": "zita-gianni-schicchi",
