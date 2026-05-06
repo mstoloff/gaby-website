@@ -20,7 +20,7 @@ interface AboutStrings {
 
 export const ABOUT: Record<Locale, AboutStrings> = {
   en: {
-    eyebrow: 'Soprano · Bilingual · Puerto Rican',
+    eyebrow: 'Soprano · Puerto Rican',
     heading: 'About',
     lede: 'Gabriela Stoloff-Báez is a Puerto Rican soprano whose performances span opera, oratorio, and contemporary work — from Mozart and Handel to world premieres of Laura Karpman and Jodi Goble.',
     paragraphs: [
@@ -48,13 +48,13 @@ export const ABOUT: Record<Locale, AboutStrings> = {
   },
 
   es: {
-    eyebrow: 'Soprano · Bilingüe · Puertorriqueña',
+    eyebrow: 'Soprano · Puertorriqueña',
     heading: 'Bio',
     lede: 'Gabriela Stoloff-Báez es una soprano puertorriqueña cuyas actuaciones abarcan la ópera, el oratorio y la obra contemporánea — desde Mozart y Händel hasta los estrenos mundiales de Laura Karpman y Jodi Goble.',
     paragraphs: [
       'Es Bachelor of Music en Interpretación Vocal &amp; Musicología por el Oberlin Conservatory of Music y Master of Music en Interpretación Vocal por el San Francisco Conservatory of Music. Fue Gerdine Young Artist en Opera Theatre of Saint Louis en 2023 y 2024, y completó el programa de formación de Chautauqua Opera Company and Conservatory en 2020, 2022 y 2023.',
-      'Sus compromisos recientes y próximos incluyen actuaciones con Opera Parallèle (<em>Harvey Milk Reimagined</em>, <em>Balls</em>), Opera Theatre of Saint Louis (<em>The Pirates of Penzance</em>, <em>Galileo Galilei</em>, <em>Susannah</em>, <em>The Barber of Seville</em>), Savannah Voice Festival (<em>Rigoletto</em>, <em>The Eleanors</em>), Seraphic Fire y Chautauqua Opera Company. En el verano de 2026 se integra a Des Moines Metro Opera como Apprentice Artist.',
-      'Gaby ha realizado recientemente la transición de mezzosoprano a soprano. Su repertorio actual de audición se centra en Marguerite (<em>Faust</em>), Mimì (<em>La bohème</em>), Agathe (<em>Der Freischütz</em>) y el papel principal de la <em>Susannah</em> de Floyd.',
+      'Sus compromisos recientes y los que se acercan incluyen actuaciones con Opera Parallèle (<em>Harvey Milk Reimagined</em>, <em>Balls</em>), Opera Theatre of Saint Louis (<em>The Pirates of Penzance</em>, <em>Galileo Galilei</em>, <em>Susannah</em>, <em>The Barber of Seville</em>), Savannah Voice Festival (<em>Rigoletto</em>, <em>The Eleanors</em>), Seraphic Fire y Chautauqua Opera Company. En el verano de 2026 se integra a Des Moines Metro Opera como Apprentice Artist.',
+      'Gaby recientemente ha pasado de mezzosoprano a soprano. Su repertorio actual de audición se centra en Marguerite (<em>Faust</em>), Mimì (<em>La bohème</em>), Agathe (<em>Der Freischütz</em>) y el papel principal de la <em>Susannah</em> de Floyd.',
     ],
     pullQuote:
       'Un repertorio que celebra la diversidad, la multiplicidad, la justicia social y la humanidad.',
@@ -71,16 +71,16 @@ export const ABOUT: Record<Locale, AboutStrings> = {
       'Bilingüe español / English. Italiano fluido. Estudios de alemán y francés. Formación teatral y de combate escénico; danza; teoría musical. Experiencia como instructora coral, profesora particular de canto y educadora musical y de español para la primera infancia.',
     pressHeading: 'Prensa y Contrataciones',
     pressBody:
-      'Para consultas de management, solicitudes de prensa y descargar el EPK, <a href="/contact/">por favor escríbeme</a>.',
+      'Para consultas de management, solicitudes de prensa y descargar el EPK, <a href="/contact/">por favor escríbame</a>.',
     portraitCaption: '2024.',
   },
 
   it: {
-    eyebrow: 'Soprano · Bilingue · Portoricano',
+    eyebrow: 'Soprano · Portoricano',
     heading: 'Bio',
-    lede: 'Gabriela Stoloff-Báez è un soprano portoricano le cui esibizioni spaziano dall’opera all’oratorio e al repertorio contemporaneo — da Mozart e Händel alle prime mondiali di Laura Karpman e Jodi Goble.',
+    lede: 'Gabriela Stoloff-Báez è un soprano portoricano le cui esibizioni spaziano dall’opera all’oratorio e al repertorio contemporaneo — da Mozart e Händel alle prime esecuzioni assolute di Laura Karpman e Jodi Goble.',
     paragraphs: [
-      'Ha conseguito il Bachelor of Music in Canto e Musicologia presso l’Oberlin Conservatory of Music e il Master of Music in Canto presso il San Francisco Conservatory of Music. È stata Gerdine Young Artist all’Opera Theatre of Saint Louis nel 2023 e nel 2024 e ha completato il programma di formazione della Chautauqua Opera Company and Conservatory nel 2020, 2022 e 2023.',
+      'Ha conseguito il <em>Bachelor of Music</em> in Canto e Musicologia presso l’Oberlin Conservatory of Music e il <em>Master of Music</em> in Canto presso il San Francisco Conservatory of Music. È stata Gerdine Young Artist all’Opera Theatre of Saint Louis nel 2023 e nel 2024 e ha completato il programma di formazione della Chautauqua Opera Company and Conservatory nel 2020, 2022 e 2023.',
       'Tra i suoi impegni recenti e futuri figurano produzioni con Opera Parallèle (<em>Harvey Milk Reimagined</em>, <em>Balls</em>), Opera Theatre of Saint Louis (<em>The Pirates of Penzance</em>, <em>Galileo Galilei</em>, <em>Susannah</em>, <em>The Barber of Seville</em>), Savannah Voice Festival (<em>Rigoletto</em>, <em>The Eleanors</em>), Seraphic Fire e Chautauqua Opera Company. Nell’estate del 2026 entrerà a far parte di Des Moines Metro Opera come Apprentice Artist.',
       'Gaby ha recentemente effettuato la transizione vocale da mezzosoprano a soprano. Il suo repertorio attuale per le audizioni si concentra su Marguerite (<em>Faust</em>), Mimì (<em>La bohème</em>), Agathe (<em>Der Freischütz</em>) e il ruolo del titolo nella <em>Susannah</em> di Floyd.',
     ],
@@ -99,7 +99,7 @@ export const ABOUT: Record<Locale, AboutStrings> = {
       'Bilingue spagnolo / inglese. Italiano fluente. Studi di tedesco e francese. Formazione teatrale e di combattimento scenico; danza; teoria musicale. Esperienza come istruttrice corale, insegnante privata di canto ed educatrice musicale e di spagnolo per l’infanzia.',
     pressHeading: 'Stampa e Prenotazioni',
     pressBody:
-      'Per richieste di management, contatti stampa e per scaricare l’EPK, <a href="/contact/">scrivimi</a>.',
+      'Per richieste di management, contatti stampa e per scaricare l’EPK, <a href="/contact/">contattatemi</a>.',
     portraitCaption: '2024.',
   },
 };
